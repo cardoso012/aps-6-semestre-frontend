@@ -22,13 +22,22 @@ export function PhotoModal({ setPhoto, closeModal }) {
         videoRef.current.pause();
         canvasRef.current.width = videoRef.current.videoWidth;
         canvasRef.current.height = videoRef.current.videoHeight;
+        
         canvasRef.current.getContext('2d').drawImage(videoRef.current, 0, 0);
-        const screenshot = canvasRef.current.toDataURL('image/webp');
-        setPhoto(screenshot);
+
+        canvasRef.current.toBlob(async (blob) => {
+            if (!blob) {
+                console.log('sem imagem');
+                return;
+            }
+            
+            setPhoto(blob);
+        }, 'image/webp');
+
         setMessage('Salvando foto...');
         setTimeout(() => {
             closeModal();
-        }, 3000);        
+        }, 2000);
     }
 
     return (

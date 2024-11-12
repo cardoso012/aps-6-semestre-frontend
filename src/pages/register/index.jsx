@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import { PhotoModal } from './modal/photo-modal';
+import { api } from '../../../lib/api';
 
 export function Register() {
 
@@ -23,23 +24,17 @@ export function Register() {
     const submit = async (event) => {
         event.preventDefault();
 
-        const body = {
-            name, 
-            email, 
-            password, 
-            file: photo
-        }
-        console.log(body);
+        const formData = new FormData();
+        formData.append('nome', name);
+        formData.append('email', email);
+        formData.append('senha', password);
+        formData.append('foto', photo);
 
-        const response = await fetch('http://localhost:3000/user-create', {
-            method: 'POST',
-            body: JSON.stringify(body),
+        await api.post('/cadastro', formData, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data'
             }
         });
-
-        await response.json();
         
         navigate('/login');
     }
