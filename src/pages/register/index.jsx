@@ -28,7 +28,7 @@ export function Register() {
         formData.append('nome', name);
         formData.append('email', email);
         formData.append('senha', password);
-        formData.append('foto', photo);
+        formData.append('foto', photo, `${name}-${Date.now()}.webp`);
 
         await api.post('/cadastro', formData, {
             headers: {
